@@ -1,0 +1,68 @@
+prod_category	avg_predd1_17_spend	dd1_17_spend
+1	HEALTHCAR E.	1.824685	2.377639
+2	PRODUC E.	7.786337	4.352540
+3	BAKERY & DAIR Y.	8.982360	5.127461
+4	MF P.	9.325380	5.821574
+5	PREPARED FOOD S.	10.094452	6.100323
+6	BB T.	5.368226	6.236634
+7	HOUSEHOLD&PE T.	5.795527	6.408171
+8	GROCER Y.	7.858431	6.836385
+9	IMPULS E.	12.366889	7.585259
+10	BW S.	9.985143	15.843822
+11	GM & Clothing	20.612455	33.310046
+
+from math import pi
+ 
+# Set data
+df = pct_prod_spend1
+ 
+ # ------- PART 1: Create background
+ 
+# number of variable
+categories=df['prod_category']
+N = categories.nunique()
+ 
+f, ax = plt.subplots(figsize=(6, 15))
+# What will be the angle of each axis in the plot? (we divide the plot / number of variable)
+angles = [n / float(N) * 2 * pi for n in range(N)]
+angles += angles[:1]
+
+
+# Initialise the spider plot
+ax = plt.subplot(111, polar=True)
+ 
+# If you want the first axis to be on top:
+ax.set_theta_offset(pi / 2)
+ax.set_theta_direction(-1)
+ 
+# Draw one axe per variable + add labels labels yet
+plt.xticks(angles[:-1], categories)
+ 
+# Draw ylabels
+ax.set_rlabel_position(0)
+plt.yticks([5,10,15,20,25,30,35], ["5","10","15", "20", "25","30", "35"], color="grey", size=7)
+plt.ylim(0,35)
+ 
+ 
+ # ------- PART 2: Add plots
+ 
+ # Plot each individual = each line of the data
+# I don't do a loop, because plotting more than 3 groups makes the chart unreadable
+ 
+# Ind1
+values=df['avg_predd1_17_spend'].values.flatten().tolist()
+values += values[:1]
+
+ax.plot(angles, values, linewidth=1, linestyle='solid', label="avg_predd1_17_spend")
+ax.fill(angles, values, 'b', alpha=0.1)
+ 
+# Ind2
+values=df['dd1_17_spend'].values.flatten().tolist()
+values += values[:1]
+
+ax.plot(angles, values, linewidth=1, linestyle='solid', label="dd1_17_spend")
+ax.fill(angles, values, 'r', alpha=0.1)
+ 
+# Add legend
+plt.legend(loc='lower right', bbox_to_anchor=(0.1, 0.1))
+plt.title("Pct sales in pre and DD week\n")
