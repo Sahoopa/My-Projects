@@ -1,0 +1,14 @@
+# all fatures distribution by target at once
+# feature distribution by target 
+data_dia = df['size_flag']
+data = df.drop('size_flag', axis=1)
+data_n_2 = (data - data.mean()) / (data.std())              # standardization
+#print(data_n_2.iloc[:,0:10])
+for i in range(0,len(df.columns)-1,10):
+    data = pd.concat([data_dia,data_n_2.iloc[:,i:i+10]],axis=1)
+    data = pd.melt(data,id_vars="size_flag",
+                        var_name="features",
+                        value_name='value')
+    plt.figure(figsize=(10,10))
+    sns.violinplot(x="features", y="value", hue="size_flag", data=data,split=True, inner="quart")
+    plt.xticks(rotation=90)
